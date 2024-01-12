@@ -347,8 +347,8 @@ int loop(t_data *data)
 		prev_dy = 0;		
 	}
 
-	if (last_a_z != data->map3D->a_z || last_a_x != data->map3D->a_x)
-	{
+	// if (last_a_z != data->map3D->a_z || last_a_x != data->map3D->a_x)
+	// {
 		mlx_destroy_image(data->mlx_ptr, data->img.mlx_img);
 		data->img.mlx_img = mlx_new_image(data->mlx_ptr, WIDTH, HEIGHT);
 		data->img.addr = mlx_get_data_addr(data->img.mlx_img, &data->img.bpp, &data->img.line_len, &data->img.endian);
@@ -376,24 +376,27 @@ int loop(t_data *data)
 // 			// img_pix_put(&data.img, i * -1, 100, GREEN_PIXEL);
 
 // 		}
-		for (size_t i = 0; i < 300; i++)
-		{
-				img_pix_put3d(data, 50, 100 + i, 200, GREEN_PIXEL);
-				img_pix_put3d(data, 100, 100 + i, 200, GREEN_PIXEL);
-		}
-			rot_3D(data->map3D);
+		// for (size_t i = 0; i < 300; i++)
+		// {
+		// 		img_pix_put3d(data, 50, 100 + i, 200, GREEN_PIXEL);
+		// 		img_pix_put3d(data, 100, 100 + i, 200, GREEN_PIXEL);
+		// }
+			// rot_3D(data->map3D);
+		// img_pix_put(data->img, 50, 100, GREEN_PIXEL);
+		set_coord_3d(data, 50, 100, 0, GREEN_PIXEL);
+		// put_coord_3d(data, 50, 100, 0, GREEN_PIXEL);
 		// for (int i = 0; i < data->map3D->size_i; i++)
 // PRINTFCOORDINATE >>>>>>>>>>>>>>>
-		for (size_t i = 0; i < 300; i++)
-			prntcoordinatefunctimg_pix_put3d(data, 50, 100 + i, 200, GREEN_PIXEL);
-
+		// for (size_t i = 0; i < 300; i++)
+			// prntcoordinatefunctimg_pix_put3d(data, 50, 100 + i, 200, GREEN_PIXEL);
+// put_coord_3d(t_data *data, int x, int y, int z, int color)
 	// img_pix_put(&data->img, 50, 50, GREEN_PIXEL);
 			printf("size:%ld\n", data->map3D->size_i);
 
 			// cartesian_to_iso(data->map);
 			// draw_lines(&data->img, &data->map);
 
-		}
+		// }
 		last_a_z = data->map3D->a_z;
 		last_a_x = data->map3D->a_x;
 		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);

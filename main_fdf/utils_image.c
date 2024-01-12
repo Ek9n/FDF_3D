@@ -41,19 +41,50 @@ void	img_pix_put(t_img *img, int x, int y, int color)
     *(int *)pixel = color;
 }
 
-void	img_pix_put3d(t_data *data, int x, int y, int z, int color)
+void	set_coord_3d(t_data *data, int x, int y, int z, int color)
 {
-    char    *pixel;
+    // char    *pixel;
 	size_t	n = data->map3D->size_i;
 	// printf("PrevCoordAddr:%d\n", data->map3D->coords[n]);
 
 	if (data->map3D->size_i < data->map3D->max_n)
 	{   
-		pixel = data->img.addr + (x * data->img.line_len + y * (data->img.bpp / 8));
+		// pixel = data->img.addr + (x * data->img.line_len + y * (data->img.bpp / 8));
 		data->map3D->coords[n].x = x;
 		data->map3D->coords[n].y = y;
 		data->map3D->coords[n].z = z;
-		*(int *)pixel = color;
+		// *(int *)pixel = color;
+		// lastcoordinateaddrhere..
+		data->map3D->size_n++;
+		data->map3D->size_i++;
+	}
+	else
+		data->map3D->size_i = 0;
+
+}
+
+// void	set_coord_3d(t_data *data, int x, int y, int z, int color)
+void	put_coord_3d(t_data *data, int x, int y, int z, int color)
+{
+	int	i = -1;
+	while (++i < data->map3D->size_i)
+	{
+		if (data->map3D->coords[i].x == x && data->map3D->coords[i].y == y && \
+			data->map3D->coords[i].z == z)
+			
+			// die addresse des bildes in ein 3d array
+	}		
+    // char    *pixel;
+	size_t	n = data->map3D->size_i;
+	// printf("PrevCoordAddr:%d\n", data->map3D->coords[n]);
+
+	if (data->map3D->size_i < data->map3D->max_n)
+	{   
+		// pixel = data->img.addr + (x * data->img.line_len + y * (data->img.bpp / 8));
+		data->map3D->coords[n].x = x;
+		data->map3D->coords[n].y = y;
+		data->map3D->coords[n].z = z;
+		// *(int *)pixel = color;
 		// lastcoordinateaddrhere..
 		data->map3D->size_n++;
 		data->map3D->size_i++;

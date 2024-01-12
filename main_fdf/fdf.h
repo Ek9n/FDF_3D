@@ -132,6 +132,8 @@ void malloc_world(t_map *map);
 // void rotate(t_coords *coords);
 void rot_pxl(t_map *map, t_data *data);
 void	img_pix_put3d(t_data *data, int x, int y, int z, int color);
+void	put_coord_3d(t_data *data, int x, int y, int z, int color);
+void	set_coord_3d(t_data *data, int x, int y, int z, int color);
 void rot_3D(t_map3D *map3D);
 
 
