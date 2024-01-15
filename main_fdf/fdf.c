@@ -425,24 +425,36 @@ int loop(t_data *data)
 			// 	set_coord_3d(data, 100, 100, i, GREEN_PIXEL);
 			// }
 
-			// KREIS:
-			for (float k = 0; k < 20; k += 1)
-			{
+			// KREIS/Sphere:
+			// for (float k = 0; k < 20; k += 1)
+			// {
 
-				float	r = 100;
-				// for (float j = 0; j < 6; j += 1)
-				// {
-					for (float i = 0; i < 100; i += 1)
-					{
-						set_coord_3d(data, r * cos(i), r * sin(i), 0, GREEN_PIXEL);
-					}
-					// r -= 20;
-				// }
-				data->map3D->a_x += 18.0 / 360 * 3.14;
-				rot_x(data->map3D);
+			// 	float	r = 100;
+			// 	// for (float j = 0; j < 6; j += 1)
+			// 	// {
+			// 		for (float i = 0; i < 100; i += 1)
+			// 		{
+			// 			set_coord_3d(data, r * cos(i), r * sin(i), 0, GREEN_PIXEL);
+			// 		}
+			// 		// r -= 20;
+			// 	// }
+			// 	data->map3D->a_x += 18.0 / 360 * 3.14;
+			// 	rot_x(data->map3D);
+			// }
+		float r = 80;
+		int num_points_per_turn = 6 *360;  // Anzahl der Punkte pro Umdrehung
+		int num_turns = 100;  // Anzahl der Umdrehungen (zum Beispiel 5 Umdrehungen)
 
+		for (float z = 0; z < num_turns; z += 1) {
+			for (int i = 0; i < num_points_per_turn; i++) {
+				float angle = 2.0 * M_PI * i / num_points_per_turn;
+				set_coord_3d(data, r * cos(angle), r * sin(angle), z, 0xF0000);
 			}
-
+			for (int i = 0; i < num_points_per_turn; i++) {
+				float angle = 2.0 * M_PI * i / num_points_per_turn;
+				set_coord_3d(data, (r - 1) * cos(angle), (r - 1) * sin(angle), z, PURPLE_PIXEL);
+			}
+		}
 
 
 			// for (int i = 0; i < 100; i++)
@@ -634,7 +646,7 @@ int main(int argc, char **argv)
 		
 // HIER KREIS
 
-		size_t size = 10000;
+		size_t size = 1000000;
 		data.map3D = malloc(1 * sizeof(t_map3D));
 		data.map3D->coords = malloc(size * sizeof(t_coords));
 		data.map3D->max_n = size;
