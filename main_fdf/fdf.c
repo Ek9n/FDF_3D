@@ -307,7 +307,6 @@ int render(t_data *data)
 	return (0);
 }
 
-
 int loop(t_data *data)
 {
 	if (data->win_ptr == NULL)
@@ -323,29 +322,43 @@ int loop(t_data *data)
 	static int mouse_y;
 
 
-	static double last_a_z;
 	static double last_a_x;
-	float	rot_speed = 0.008;
+	static double last_a_y;
+	static double last_a_z;
+	float	rot_speed = 0.02;
+		
+	static double offset_y;
+	static double offset_x;
 	
 	if (data->button_pressed)
 	{
 		mlx_mouse_get_pos(data->mlx_ptr, data->win_ptr, &mouse_y, &mouse_x);
-		printf("m_x:%d, m_y:%d\n", mouse_x, mouse_y);
-		
-		// if (data->safed_mouse_x != mouse_x || data->safed_mouse_x != mouse_y)
+		// printf("m_x:%d, m_y:%d\n", mouse_x, mouse_y);
 		dx = mouse_x - data->safed_mouse_x;
 		dy = mouse_y - data->safed_mouse_y;
-		data->map3D->a_z += (dy - prev_dy) * rot_speed;
-		data->map3D->a_x += (dx - prev_dx) * rot_speed;
+		data->map3D->a_y += (dx - prev_dx) * rot_speed;
+		data->map3D->a_x -= (dy - prev_dy) * rot_speed;
 	
 		prev_dx = dx;
 		prev_dy = dy;
 	}
-	else
+	else if (data->button2_pressed)
+	{
+		mlx_mouse_get_pos(data->mlx_ptr, data->win_ptr, &mouse_y, &mouse_x);
+		dx = mouse_x - data->safed_mouse_x;
+		dy = mouse_y - data->safed_mouse_y;
+		offset_x += dx - prev_dx;
+		offset_y += dy - prev_dy;
+
+		prev_dx = dx;
+		prev_dy = dy;
+	}
+	else if (!data->button_pressed && !data->button2_pressed)
 	{
 		prev_dx = 0;
 		prev_dy = 0;		
 	}
+
 
 	// if (last_a_z != data->map3D->a_z || last_a_x != data->map3D->a_x)
 	// {
@@ -381,24 +394,90 @@ int loop(t_data *data)
 		// 		img_pix_put3d(data, 50, 100 + i, 200, GREEN_PIXEL);
 		// 		img_pix_put3d(data, 100, 100 + i, 200, GREEN_PIXEL);
 		// }
-			// rot_3D(data->map3D);
-		// img_pix_put(data->img, 50, 100, GREEN_PIXEL);
-		set_coord_3d(data, 50, 100, 0, GREEN_PIXEL);
-		// put_coord_3d(data, 50, 100, 0, GREEN_PIXEL);
-		// for (int i = 0; i < data->map3D->size_i; i++)
-// PRINTFCOORDINATE >>>>>>>>>>>>>>>
-		// for (size_t i = 0; i < 300; i++)
-			// prntcoordinatefunctimg_pix_put3d(data, 50, 100 + i, 200, GREEN_PIXEL);
-// put_coord_3d(t_data *data, int x, int y, int z, int color)
-	// img_pix_put(&data->img, 50, 50, GREEN_PIXEL);
-			printf("size:%ld\n", data->map3D->size_i);
+		// img_pix_put(&data->img, 50, 100, GREEN_PIXEL);
+		static int flag;
+		if (flag == 0)
+		{
+			// QUADER 100x100:
+			// for (int i = 0; i < 100; i++)
+			// {
+			// 	set_coord_3d(data, 0, i, 0, GREEN_PIXEL);
+			// 	set_coord_3d(data, 100, i, 0, GREEN_PIXEL);
+			// 	set_coord_3d(data, i, 0, 0, GREEN_PIXEL);
+			// 	set_coord_3d(data, i, 100, 0, GREEN_PIXEL);
+			// 	set_coord_3d(data, 0, i, 0, GREEN_PIXEL);
+			// 	set_coord_3d(data, 100, i, 0, GREEN_PIXEL);
+			// 	set_coord_3d(data, i, 0, 0, GREEN_PIXEL);
+			// 	set_coord_3d(data, i, 100, 0, GREEN_PIXEL);
 
-			// cartesian_to_iso(data->map);
-			// draw_lines(&data->img, &data->map);
+			// 	set_coord_3d(data, 0, i, 100, GREEN_PIXEL);
+			// 	set_coord_3d(data, 100, i, 100, GREEN_PIXEL);
+			// 	set_coord_3d(data, i, 0, 100, GREEN_PIXEL);
+			// 	set_coord_3d(data, i, 100, 100, GREEN_PIXEL);
+			// 	set_coord_3d(data, 0, i, 100, GREEN_PIXEL);
+			// 	set_coord_3d(data, 100, i, 100, GREEN_PIXEL);
+			// 	set_coord_3d(data, i, 0, 100, GREEN_PIXEL);
+			// 	set_coord_3d(data, i, 100, 100, GREEN_PIXEL);
 
-		// }
-		last_a_z = data->map3D->a_z;
-		last_a_x = data->map3D->a_x;
+			// 	set_coord_3d(data, 0, 0, i, GREEN_PIXEL);
+			// 	set_coord_3d(data, 100, 0, i, GREEN_PIXEL);
+			// 	set_coord_3d(data, 0, 100, i, GREEN_PIXEL);
+			// 	set_coord_3d(data, 100, 100, i, GREEN_PIXEL);
+			// }
+
+			// KREIS:
+			for (float k = 0; k < 20; k += 1)
+			{
+
+				float	r = 100;
+				// for (float j = 0; j < 6; j += 1)
+				// {
+					for (float i = 0; i < 100; i += 1)
+					{
+						set_coord_3d(data, r * cos(i), r * sin(i), 0, GREEN_PIXEL);
+					}
+					// r -= 20;
+				// }
+				data->map3D->a_x += 18.0 / 360 * 3.14;
+				rot_x(data->map3D);
+
+			}
+
+
+
+			// for (int i = 0; i < 100; i++)
+			// 	set_coord_3d(data, i, i, 0, GREEN_PIXEL);
+				// set_coord_3d(data, HEIGHT / 2, (WIDTH / 2) - 50 + i, 0, GREEN_PIXEL);
+				// setput_coord_3d(data, 350, (WIDTH / 2) - 50 + i, 0);
+				// setput_coord_3d(data, 350, 200 + i, 0);
+			// data->map3D->size_i = 0;
+			flag = 1;
+		}
+			// data->map3D->a_z = 0.5;
+		if (data->map3D->a_z != last_a_z)
+		{
+			data->map3D->a_z = last_a_z - data->map3D->a_z;
+			rot_z(data->map3D);
+			last_a_z = data->map3D->a_z;
+		}		
+		if (data->map3D->a_x != last_a_x)
+		{
+			data->map3D->a_x = last_a_x - data->map3D->a_x;
+			rot_x(data->map3D);
+			last_a_x = data->map3D->a_x;
+		}	
+		if (data->map3D->a_y != last_a_y)
+		{
+			data->map3D->a_y = last_a_y - data->map3D->a_y;
+			rot_y(data->map3D);
+			last_a_y = data->map3D->a_y;
+		}
+		// print_coords(data->map3D, 3);
+		// printf("a_z:%.2lf\n", data->map3D->a_z);
+
+		// last_a_y = data->map3D->a_y;
+		// last_a_z = data->map3D->a_z;
+		put_coords_3d(data, HEIGHT / 2 + offset_x, (WIDTH / 2) - 50 + offset_y);
 		mlx_put_image_to_window(data->mlx_ptr, data->win_ptr, data->img.mlx_img, 0, 0);
 
 	return (0);
@@ -554,6 +633,7 @@ int main(int argc, char **argv)
 
 		
 // HIER KREIS
+
 		size_t size = 10000;
 		data.map3D = malloc(1 * sizeof(t_map3D));
 		data.map3D->coords = malloc(size * sizeof(t_coords));
@@ -562,6 +642,9 @@ int main(int argc, char **argv)
 		data.map3D->a_y = 0;
 		data.map3D->a_z = 0;
 
+
+		// data.map3D->coords[0].x = 42;
+		// printf("First x:%.2lf\n", data.map3D->coords[0].x);
 		// static double r = 50;
 		// for (double i = 0; i < 100; i += 0.1)
 		// {
@@ -587,10 +670,10 @@ int main(int argc, char **argv)
 		// mlx_put_image_to_window(data.mlx_ptr, data.win_ptr, data.img.mlx_img, 0, 0);
 	}
 
-	// mlx_loop_hook(data.mlx_ptr, &render, &data);
 	mlx_loop_hook(data.mlx_ptr, &loop, &data);
-	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
-	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease, &data);
+	// mlx_loop_hook(data.mlx_ptr, &render, &data);
+	mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress3D, &data);
+	mlx_hook(data.win_ptr, KeyRelease, KeyReleaseMask, &handle_keyrelease3D, &data);
 
 
 	mlx_loop(data.mlx_ptr);

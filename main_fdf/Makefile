@@ -4,7 +4,7 @@ LIBFT= libs/the_libft/libft.a
 MLX = -L ./libs/minilibx-linux -lmlx -lXext -lX11 -lm
 CC=cc
 
-SRCS = fdf.c keypress_handling.c utils_colors.c utils_image.c utils_map.c utils_extra.c
+SRCS = fdf.c keypress_handling.c keypress_handling3D.c utils_colors.c utils_image.c utils_map.c utils_extra.c
 OBJS	:= ${SRCS:.c=.o}
 
 RM=rm -rf

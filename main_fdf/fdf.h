@@ -101,11 +101,14 @@ typedef struct s_data
 	int safed_mouse_x;
 	int safed_mouse_y;
 	bool button_pressed;
+	bool button2_pressed;
 } t_data;
 
 // functions
 int handle_keypress(int key, t_data *data);
 int handle_keyrelease(int keysym, t_data *data);
+int handle_keypress3D(int key, t_data *data);
+int handle_keyrelease3D(int keysym, t_data *data);
 
 int is_dark(t_color color);
 t_color *gen_gradient(void);
@@ -130,11 +133,17 @@ size_t	delay_ms(void);
 void malloc_world(t_map *map);
 // void rotate(t_coords *coords);
 // void rotate(t_coords *coords);
-void rot_pxl(t_map *map, t_data *data);
+void 	rot_pxl(t_map *map, t_data *data);
 void	img_pix_put3d(t_data *data, int x, int y, int z, int color);
-void	put_coord_3d(t_data *data, int x, int y, int z, int color);
+void	setput_coord_3d(t_data *data, int x, int y, int z);
 void	set_coord_3d(t_data *data, int x, int y, int z, int color);
-void rot_3D(t_map3D *map3D);
+void	put_coords_3d(t_data *data, int x_offset, int y_offset);
+void 	rot_3D(t_map3D *map3D);
+void	rot_x(t_map3D *map3D);
+void	rot_y(t_map3D *map3D);
+void	rot_z(t_map3D *map3D);
+
+size_t	print_coords(t_map3D *map, int coordsPerLine);
 
 
 #endif

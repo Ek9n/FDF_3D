@@ -128,27 +128,116 @@ void cartesian_to_iso(t_map *map)
 
 }
 
+void rot_x(t_map3D *map3D)
+{
+	double y;
+	double z;
+	double scale;
+
+	scale = 1;
+
+	double yy;
+	double zz;
+	
+	int i = -1;
+	while (++i < map3D->size_i)
+	{
+		float cos_x = cos(map3D->a_x);
+		float sin_x = sin(map3D->a_x);
+
+		y = map3D->coords[i].y;
+		z = map3D->coords[i].z;
+
+		yy = y * cos_x - z * sin_x;
+		zz = y * sin_x + z * cos_x;
+
+		map3D->coords[i].y = yy * scale;
+		map3D->coords[i].z = zz * scale;
+	}
+}
+
+void rot_y(t_map3D *map3D)
+{
+	double x;
+	double z;
+	double scale;
+
+	scale = 1;
+
+	double xx;
+	double zz;
+	
+	int i = -1;
+	while (++i < map3D->size_i)
+	{
+		float cos_y = cos(map3D->a_y);
+		float sin_y = sin(map3D->a_y);
+
+		x = map3D->coords[i].x;
+		z = map3D->coords[i].z;
+		
+		xx = z * sin_y + x * cos_y;
+		zz = z * cos_y - x * sin_y;
+
+		map3D->coords[i].x = xx * scale;
+		map3D->coords[i].z = zz * scale;
+	}
+}
+
+void rot_z(t_map3D *map3D)
+{
+	double x;
+	double y;
+	double scale;
+
+	scale = 1;
+
+	double xx;
+	double yy;
+	
+	int i = -1;
+	while (++i < map3D->size_i)
+	{
+		float cos_z = cos(map3D->a_z);
+		float sin_z = sin(map3D->a_z);
+
+		x = map3D->coords[i].x;
+		y = map3D->coords[i].y;
+		
+		xx = x * cos_z - y * sin_z;
+		yy = x * sin_z + y * cos_z;
+
+		map3D->coords[i].x = xx * scale;
+		map3D->coords[i].y = yy * scale;
+	}
+}
 
 void rot_3D(t_map3D *map3D)
 {
-	int x;
-	int y;
-	int z;
+	double x;
+	double y;
+	double z;
 	double scale;
 
-	scale = 20.0;
+	scale = 1;
 	x = 0;
 
 	int off_x;
 	int off_y;
 
-	off_x = 100;
-	off_y = 100;
+	off_x = 0;
+	off_y = 0;
 	double xx;
 	double yy;
+	double zz;
 	
+	// static double	last_a_x = map3D->a_x;
+	// static double	last_a_y = map3D->a_y;
+	// static double	last_a_z = map3D->a_z;
+	
+	printf ("size_i in rot$%d\n", map3D->size_i);
 	int i = -1;
-	while (++i < map3D->size_i - 1)
+	while (++i < map3D->size_i)
 	{
 		float cos_z = cos(map3D->a_z);
 		float sin_z = sin(map3D->a_z);
@@ -157,13 +246,56 @@ void rot_3D(t_map3D *map3D)
 		x = map3D->coords[i].x;
 		y = map3D->coords[i].y;
 		z = map3D->coords[i].z;
-		xx = (x - off_x) * cos_z - (y - off_y) * sin_z;
-		yy = (x - off_x) * sin_z + (y - off_y) * cos_z;
-		yy = yy * cos_x - z * sin_x;
+		xx = (x + off_x) * cos_z - (y + off_y) * sin_z;
+		yy = (x + off_x) * sin_z + (y + off_y) * cos_z;
+		// rotate around y-axis:
+		// xx = z * 
+		// rotate around x-axis:
+		// yy = yy * cos_x - z * sin_x;
+		// zz = yy * 
+
 
 			map3D->coords[i].x = xx * scale;
 			map3D->coords[i].y = yy * scale;
-			// map3D->coords[i].y = yy * scale;
-
 	}
 }
+
+// BACKUP:
+// void rot_3D(t_map3D *map3D)
+// {
+// 	double x;
+// 	double y;
+// 	double z;
+// 	double scale;
+
+// 	scale = 1;
+// 	x = 0;
+
+// 	int off_x;
+// 	int off_y;
+
+// 	off_x = 0;
+// 	off_y = 0;
+// 	double xx;
+// 	double yy;
+	
+// 	// map3D->a_z = 0.5;
+// 	printf ("size_i in rot$%d\n", map3D->size_i);
+// 	int i = -1;
+// 	while (++i < map3D->size_i)
+// 	{
+// 		float cos_z = cos(map3D->a_z);
+// 		float sin_z = sin(map3D->a_z);
+// 		float cos_x = cos(map3D->a_x);
+// 		float sin_x = sin(map3D->a_x);
+// 		x = map3D->coords[i].x;
+// 		y = map3D->coords[i].y;
+// 		z = map3D->coords[i].z;
+// 		xx = (x + off_x) * cos_z - (y + off_y) * sin_z;
+// 		yy = (x + off_x) * sin_z + (y + off_y) * cos_z;
+// 		yy = yy * cos_x - z * sin_x;
+
+// 			map3D->coords[i].x = xx * scale;
+// 			map3D->coords[i].y = yy * scale;
+// 	}
+// }

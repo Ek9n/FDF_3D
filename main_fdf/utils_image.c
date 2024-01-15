@@ -43,72 +43,110 @@ void	img_pix_put(t_img *img, int x, int y, int color)
 
 void	set_coord_3d(t_data *data, int x, int y, int z, int color)
 {
-    // char    *pixel;
 	size_t	n = data->map3D->size_i;
-	// printf("PrevCoordAddr:%d\n", data->map3D->coords[n]);
 
 	if (data->map3D->size_i < data->map3D->max_n)
 	{   
-		// pixel = data->img.addr + (x * data->img.line_len + y * (data->img.bpp / 8));
 		data->map3D->coords[n].x = x;
 		data->map3D->coords[n].y = y;
 		data->map3D->coords[n].z = z;
-		// *(int *)pixel = color;
-		// lastcoordinateaddrhere..
 		data->map3D->size_n++;
 		data->map3D->size_i++;
 	}
 	else
-		data->map3D->size_i = 0;
-
+		printf("(set_coord_3d) MAP FULL!!?´\n");
+		// data->map3D->size_i = 0;
 }
 
 // void	set_coord_3d(t_data *data, int x, int y, int z, int color)
-void	put_coord_3d(t_data *data, int x, int y, int z, int color)
+void	setput_coord_3d(t_data *data, int x, int y, int z)
 {
-	int	i = -1;
-	while (++i < data->map3D->size_i)
-	{
-		if (data->map3D->coords[i].x == x && data->map3D->coords[i].y == y && \
-			data->map3D->coords[i].z == z)
-			
-			// die addresse des bildes in ein 3d array
-	}		
-    // char    *pixel;
-	size_t	n = data->map3D->size_i;
-	// printf("PrevCoordAddr:%d\n", data->map3D->coords[n]);
-
 	if (data->map3D->size_i < data->map3D->max_n)
 	{   
-		// pixel = data->img.addr + (x * data->img.line_len + y * (data->img.bpp / 8));
+		size_t	n = data->map3D->size_i;
+		// if (n == -1)
+			// n = 0;
+
+		// while (++i < data->map3D->size_i)
+		// {
+			// if (data->map3D->coords[i].x == x && data->map3D->coords[i].y == y && \
+			// 	data->map3D->coords[i].z == z)
+		if (x >= 0 && y >= 0)
+			img_pix_put(&data->img, x, y, GREEN_PIXEL);
 		data->map3D->coords[n].x = x;
 		data->map3D->coords[n].y = y;
 		data->map3D->coords[n].z = z;
-		// *(int *)pixel = color;
-		// lastcoordinateaddrhere..
 		data->map3D->size_n++;
 		data->map3D->size_i++;
+		// }		
 	}
-	else
-		data->map3D->size_i = 0;
+	// else
+	// 	data->map3D->size_i = 0;
+}
+
+void	put_coords_3d(t_data *data, int x_offset, int y_offset)
+{
+	double x, y;
+	int	i = -1;
+	while (++i < data->map3D->size_i)
+	{
+		x = data->map3D->coords[i].x + x_offset;
+		y = data->map3D->coords[i].y + y_offset;
+		if (x >= 0 && y >= 0 && x <= HEIGHT && y <= WIDTH)
+			img_pix_put(&data->img, x, y, GREEN_PIXEL);
+		// printf("HIER\n");
+	}		
 
 }
 
-// utils_image.c:47:32: error: ‘data->map3D’ is a pointer; did you mean to use ‘->’?
-//    47 |         size_t  n = data->map3D.size_n;
-//       |                                ^
-//       |                                ->
-// utils_image.c:49:22: error: invalid type argument of ‘->’ (have ‘t_img’ {aka ‘struct s_img’})
-//    49 |     pixel = data->img->addr + (x * data->img->line_len + y * (data->img->bpp / 8));
-//       |                      ^~
-// utils_image.c:49:45: error: invalid type argument of ‘->’ (have ‘t_img’ {aka ‘struct s_img’})
-//    49 |     pixel = data->img->addr + (x * data->img->line_len + y * (data->img->bpp / 8));
-//       |                                             ^~
-// utils_image.c:49:72: error: invalid type argument of ‘->’ (have ‘t_img’ {aka ‘struct s_img’})
-//    49 |     pixel = data->img->addr + (x * data->img->line_len + y * (data->img->bpp / 8));
-//       |                                                                        ^~
-// utils_image.c:50:31: error: invalid type argument of ‘->’ (have ‘t_coords’ {aka ‘struct s_coords’})
-//    50 |         data->map3D->coords[n]->x = x;
+size_t	print_coords(t_map3D *map, int coordsPerLine)
+{
+	size_t i = -1;
+	printf("COORDS(%ld) - map3D:\n", map->size_i);
+	while (++i < map->size_i)
+	{
+		// printf("HI\n");
+		printf("%.1lf/%.1lf/%.1lf ", map->coords[i].x, map->coords[i].y, map->coords[i].z);
+		if (i % coordsPerLine == 0)
+			printf("\n");
+	}
+	printf("\n");
+	return (i);
+}
+
+put_map_3d(t_data *data)
+{
+	int	i = -1;
+	int	 x;
+	int	 y;
+	printf ("size_i:%d\n", data->map3D->size_i);
+	// data->map3D->size_i = 0;
+	while (++i < data->map3D->size_i)
+	{
+		x = data->map3D->coords[i].x;
+		y = data->map3D->coords[i].y;
+		// img_pix_put(&data->img, x, y, GREEN_PIXEL);
+		// put_coord_3d(data, x, y, 0);
+	}
+// data->map3D->size_i
+}
+
+// put_map_3d(t_data *data)
+// {
+// 	int	i = -1;
+// 	int	 x;
+// 	int	 y;
+// 	printf ("size_i:%d\n", data->map3D->size_i);
+// 	data->map3D->size_i = 0;
+// 	while (++i < data->map3D->size_i)
+// 	{
+// 		x = data->map3D->coords[i].x;
+// 		y = data->map3D->coords[i].y;
+// 		// img_pix_put(&data->img, x, y, GREEN_PIXEL);
+// 		put_coord_3d(data, x, y, 0);
+// 	}
+// // data->map3D->size_i
+// }
 
 // static void	print_square_helper(t_vars *vars, mlx_image_t *img, 
 // 		unsigned int size_xy[2], unsigned int offset_xy[2])
